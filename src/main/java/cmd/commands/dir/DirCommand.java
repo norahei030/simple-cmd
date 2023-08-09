@@ -45,7 +45,9 @@ public class DirCommand implements Runnable {
         if(target!= null && target.isDirectory()) {
             listFilesInDirectory(target);
         }
-        else {
+        else if (target != null && target.isFile()) {
+            printLine(target);
+        } else {
             listFilesInDirectory(SimpleCmd.getCurrentLocation());
         }
     }
@@ -74,12 +76,16 @@ public class DirCommand implements Runnable {
     }
 
     private void printLine(File f) {
-        if (filesOnly) {
+
             if (!f.isDirectory()) {
+                LOG.info("File ");
                 LOG.info("{}\n", f.getAbsolutePath());
+
             }
-        } else {
+         else {
+                LOG.info("Directory ");
             LOG.info("{}\n", f.getAbsolutePath());
+
         }
     }
 }
