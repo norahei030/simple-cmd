@@ -1,10 +1,9 @@
-package cmd.commands.date;
+package cmd.commands.time;
 
 import cmd.SimpleCmd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Parameters;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -19,21 +18,21 @@ import java.util.Calendar;
  * @see SimpleCmd#setCurrentLocation(File) 
  */
 @Command(
-        name = "date",
-        description = "Print current date",
+        name = "time",
+        description = "Print current time",
         mixinStandardHelpOptions = true)
-public class DateCommand implements Runnable {
+public class TimeCommand implements Runnable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DateCommand.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TimeCommand.class);
 
 
-    public DateCommand() {
+    public TimeCommand() {
         /* intentionally empty */
     }
 
     @Override
     public void run() {
-        String timeStamp = new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime());
+        String timeStamp = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
         LOG.info(timeStamp + "\n");
     }
 }
