@@ -8,6 +8,7 @@ import picocli.CommandLine.Parameters;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,16 +37,16 @@ public class MoveCommand implements Runnable {
         File sourceFile = source.toFile();
         File targetFile = target.toFile();
         try {
+            Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+            LOG.info("{} has been moved to {} \n", sourceFile, targetFile);
+        } catch (DirectoryNotEmptyException dnee) {
             final String sourceFileName = sourceFile.getName();
             File targetFinalFile;
-            if (!target.endsWith(sourceFileName) && targetFile.isDirectory()) {
-                final String targetWithSourceFilename = target.toAbsolutePath().toString().concat(FileSystems.getDefault().getSeparator() + sourceFileName);
-                targetFinalFile = new File(targetWithSourceFilename);
-            } else {
-                targetFinalFile = targetFile;
-            }
-            Files.move(source, targetFinalFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            LOG.info("{} has been moved to {} \n", sourceFile, targetFile);
+            final String targetWithSourceFilename = target.toAbsolutePath().toString().concat(FileSystems.getDefault().getSeparator() + sourceFileName);
+            targetFinalFile = new File(targetWithSourceFilename);
+            LOG.error("Please only move and rename into non existent or empty directories. Otherwise adjust the given command to: move {} {}\n",
+                      source,
+                      targetFinalFile.toPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
