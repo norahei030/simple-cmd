@@ -4,9 +4,12 @@ import cmd.SimpleCmd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
@@ -25,6 +28,8 @@ public class FindCommand implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(FindCommand.class);
     @Parameters(index = "0", description = "type to match files with")
     private String type;
+    @Option(names = {"-s", "--storage"}, description = "whether used storage is to be shown")
+    private boolean showStorage;
 
     @Override
     public void run() {
@@ -47,6 +52,14 @@ public class FindCommand implements Runnable {
     }
 
     private void printLine(File f) {
-        LOG.info("{}\n", f.getAbsolutePath());
+        if (showStorage) {
+            try {
+                LOG.info("{}, used storage: {} B\n", f.getAbsolutePath(), Files.size(f.toPath()));
+            } catch (IOException ioe) {
+                LOG.error("Error while reading File size\n");
+            }
+        } else {
+            LOG.info("{}\n", f.getAbsolutePath());
+        }
     }
 }
