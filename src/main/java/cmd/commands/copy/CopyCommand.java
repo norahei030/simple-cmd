@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Scanner;
 
 /**
  * "Copy File" command class
@@ -32,10 +33,36 @@ public class CopyCommand implements Runnable {
 
     @Override
     public void run() {
+        boolean fileExists = Files.exists(target.toPath());
+        StandardCopyOption copyOption = StandardCopyOption.ATOMIC_MOVE;
+
+        if (fileExists) {
+            boolean shouldOverwrite = askUserToOverwrite();
+
+            if (!shouldOverwrite) {
+                System.out.println("The file was not copied to the new path, so that an existing file is not overwritten.");
+                return;
+            }
+        }
+
         try {
             Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("The file was successfully copied to the new path.");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private boolean askUserToOverwrite() {
+        Scanner input = new Scanner(System.in);
+        String answer;
+
+        do {
+            System.out.print("The file already exists. Do you wish to overwrite the existing file? (Y/N): ");
+            answer = input.next().trim().toUpperCase();
+        } while (!(answer.equals("Y") || answer.matches("N")));
+
+        return answer.equals(("Y"));
+    }
+
 }
