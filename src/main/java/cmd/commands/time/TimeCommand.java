@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * "Change Directory" command class
+ * "Time" command class
  * <p/>
  * Executing the command lists all the files and folders in the current working directory.
  *
