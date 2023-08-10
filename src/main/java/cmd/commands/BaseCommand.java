@@ -9,6 +9,7 @@ import cmd.commands.hash.HashCommand;
 import cmd.commands.mkdir.MkdirCommand;
 import cmd.commands.move.MoveCommand;
 import cmd.commands.time.TimeCommand;
+import cmd.commands.web.mkdir.WebCommand;
 import picocli.CommandLine.Command;
 
 /**
@@ -22,7 +23,7 @@ import picocli.CommandLine.Command;
  * @see <a href="https://picocli.info/">picocli Documentation</a>
  */
 @Command(name = "cmd", description = "base command", mixinStandardHelpOptions = true,
-         subcommands = {HashCommand.class, CdCommand.class, DateCommand.class, DirCommand.class, DelCommand.class, CopyCommand.class, MoveCommand.class, MkdirCommand.class, TimeCommand.class, FindCommand.class})
+         subcommands = {HashCommand.class, CdCommand.class, DateCommand.class, DirCommand.class, DelCommand.class, CopyCommand.class, MoveCommand.class, MkdirCommand.class, TimeCommand.class, FindCommand.class, WebCommand.class})
 public class BaseCommand implements Runnable {
     public BaseCommand() {
         /* intentionally empty */
