@@ -42,7 +42,10 @@ public class SimpleCmd {
       do {
         nextLine = scanner.nextLine();
         if (0 < nextLine.length()) {
-          arguments = nextLine.split(" ");
+          arguments = nextLine.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+          for(int i=0;i<arguments.length;i++) {
+        	  arguments[i] = arguments[i].replaceAll("\"", "");
+          }
           commandLine.execute(arguments);
         }
         LOG.info(">>> ");
